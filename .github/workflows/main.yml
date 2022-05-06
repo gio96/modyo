@@ -33,7 +33,8 @@ jobs:
           cache: maven
 
       - name: Build with Maven
-        run: mvn clean package
+        #run: mvn clean package
+        run: mvn clean install
         #run: mvn -B package --file pom.xml
   cd:
     runs-on: ubuntu-latest
