@@ -40,6 +40,11 @@ public class PokemonService {
                 .onErrorResume(throwable -> Mono.just(new PokemonDetails()));
     }
 
+
+    public Mono<PokemonDetails> getPokemon(String pokemonId) {
+        return pokemonApi.getPokemonDetails(pokemonId);
+    }
+
     Mono<PokemonDetails> getPokemonDetails(String uriPokemon) {
         return this.http
                 .get()

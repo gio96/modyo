@@ -17,4 +17,5 @@ public class PokemonDetails {
     private List<PokemonAbility> abilities;
     private List<PokemonType> types;
     private PokemonSprite sprites;
+    private List<FormDetails> forms;
  }
