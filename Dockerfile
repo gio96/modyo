@@ -3,9 +3,10 @@ EXPOSE 8080
 #RUN echo $PWD
 #ADD ./target/modyo.jar modyo.jar
 #ADD target/modyo.jar modyo.jar
-ADD modyo.jar modyo.jar
-#ENTRYPOINT ["java","-jar","/modyo.jar"]
-ENTRYPOINT ["java","-jar","modyo.jar"]
+ADD target/*.jar modyo.jar
+#ADD modyo.jar modyo.jar
+ENTRYPOINT ["java","-jar","/modyo.jar"]
+#ENTRYPOINT ["java","-jar","modyo.jar"]
 
 
 #FROM eclipse-temurin:17
