@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Resultados {
+public class ResultsDetails {
 
     private String name;
     private String url;

@@ -1,13 +1,16 @@
 package com.example.modyo;
 
 import com.example.modyo.model.PokemonDetails;
+import com.example.modyo.model.ResultsDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.ParallelFlux;
 import reactor.core.scheduler.Schedulers;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -28,13 +31,7 @@ public class PokemonService {
 
         return pokemonApi.getAllPokemon(limit)
                 .flatMap(s ->
-                        Flux.fromIterable(s.getResults())
-                                .parallel(2)// TODO  validar el parallel junto con el run
-                                .runOn(Schedulers.parallel())
-                                .flatMap(p -> getPokemonDetails(p.getUrl())
-                                        .publishOn(Schedulers.boundedElastic())))
-                //.subscribeOn(Schedulers.boundedElastic())
-                //.log()
+                        getAllPokemonDetails(s.getResults()))
                 .doOnNext(i -> log.info(String.valueOf(i)))
                 .doFinally(endType -> System.out.println(TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start) + " miliseconds"))
                 .onErrorResume(throwable -> Mono.just(new PokemonDetails()));
@@ -45,13 +42,7 @@ public class PokemonService {
 
         return pokemonApi.getAllPokemon()
                 .flatMap(s ->
-                        Flux.fromIterable(s.getResults())
-                                .parallel(2)// TODO  validar el parallel junto con el run
-                                .runOn(Schedulers.parallel())
-                                .flatMap(p -> getPokemonDetails(p.getUrl())
-                                        .publishOn(Schedulers.boundedElastic())))
-                //.subscribeOn(Schedulers.boundedElastic())
-                //.log()
+                        getAllPokemonDetails(s.getResults()))
                 .doOnNext(i -> log.info(String.valueOf(i)))
                 .doFinally(endType -> System.out.println(TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start) + " miliseconds"))
                 .onErrorResume(throwable -> Mono.just(new PokemonDetails()));
@@ -59,11 +50,19 @@ public class PokemonService {
 
 
     public Mono<PokemonDetails> getPokemon(String pokemonId) {
-        return getPokemonDetails(pokemonId)
+        return queryPokemonDetails(pokemonId)
                 .onErrorResume(throwable -> Mono.just(new PokemonDetails()));
     }
 
-    Mono<PokemonDetails> getPokemonDetails(String uriPokemon) {
+    private ParallelFlux<PokemonDetails> getAllPokemonDetails(List<ResultsDetails> results) {
+        return Flux.fromIterable(results)
+                .parallel(2)// TODO  validar el parallel junto con el run
+                .runOn(Schedulers.parallel())
+                .flatMap(p -> queryPokemonDetails(p.getUrl())
+                        .publishOn(Schedulers.boundedElastic()));
+    }
+
+    private Mono<PokemonDetails> queryPokemonDetails(String uriPokemon) {
         return this.http
                 .get()
                 .uri(uriPokemon)
