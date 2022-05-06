@@ -58,7 +58,7 @@ jobs:
           #image: ${{ secrets.DOCKERHUB_USERNAME }}/modyo
           image: giovanny96/modyo
           tags: latest
-          registry: docker.io
+          #registry: docker.io
           dockerfile: Dockerfile
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
