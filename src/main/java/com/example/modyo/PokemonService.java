@@ -23,7 +23,24 @@ public class PokemonService {
     }
 
 
-    public Flux<PokemonDetails> getBigListOfPokemon() {
+    public Flux<PokemonDetails> getBigListOfPokemon(String limit) {
+        final long start = System.nanoTime();
+
+        return pokemonApi.getAllPokemon(limit)
+                .flatMap(s ->
+                        Flux.fromIterable(s.getResults())
+                                .parallel(2)// TODO  validar el parallel junto con el run
+                                .runOn(Schedulers.parallel())
+                                .flatMap(p -> getPokemonDetails(p.getUrl())
+                                        .publishOn(Schedulers.boundedElastic())))
+                //.subscribeOn(Schedulers.boundedElastic())
+                //.log()
+                .doOnNext(i -> log.info(String.valueOf(i)))
+                .doFinally(endType -> System.out.println(TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start) + " miliseconds"))
+                .onErrorResume(throwable -> Mono.just(new PokemonDetails()));
+    }
+
+    public Flux<PokemonDetails> getListOfPokemon() {
         final long start = System.nanoTime();
 
         return pokemonApi.getAllPokemon()

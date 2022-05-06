@@ -14,8 +14,13 @@ public record PokemonController(PokemonService pokemonService) {
 
 
     @GetMapping("")
-    public Flux<PokemonDetails> getBigListOfPokemon() {
-        return pokemonService.getBigListOfPokemon();
+    public Flux<PokemonDetails> getBigListOfPokemon(@RequestParam(name = "limit") String limit) {
+        return pokemonService.getBigListOfPokemon(limit);
+    }
+
+    @GetMapping("/")
+    public Flux<PokemonDetails> getListOfPokemon() {
+        return pokemonService.getListOfPokemon();
     }
 
     @GetMapping("details")
