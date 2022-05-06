@@ -36,9 +36,9 @@ jobs:
         #run: mvn clean package
         #run: mvn clean install
         run: |
-        mvn -B package --file pom.xml
-        mkdir artifacts && cp target/*.jar artifacts
-        cd artifacts && ls
+             mvn -B package --file pom.xml
+             mkdir artifacts && cp target/*.jar artifacts
+             cd artifacts && ls
       - name: Save artifact
         uses: actions/upload-artifact@v2
         with:
