@@ -13,7 +13,7 @@ import reactor.core.publisher.Flux;
 public record PokemonController(PokemonService pokemonService) {
 
 
-    @GetMapping("/")
+    @GetMapping("")
     public Flux<PokemonDetails> getBigListOfPokemon() {
         return pokemonService.getBigListOfPokemon();
     }
