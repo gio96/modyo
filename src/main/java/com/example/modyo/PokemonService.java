@@ -3,6 +3,7 @@ package com.example.modyo;
 import com.example.modyo.model.PokemonDetails;
 import com.example.modyo.model.ResultsDetails;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
@@ -26,31 +27,38 @@ public class PokemonService {
     }
 
 
+    @Cacheable("bigPokemon")
     public Flux<PokemonDetails> getBigListOfPokemon(String limit) {
         final long start = System.nanoTime();
 
         return pokemonApi.getAllPokemon(limit)
                 .flatMap(s ->
                         getAllPokemonDetails(s.getResults()))
+                .cache()
                 .doOnNext(i -> log.info(String.valueOf(i)))
                 .doFinally(endType -> System.out.println(TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start) + " miliseconds"))
                 .onErrorResume(throwable -> Mono.just(new PokemonDetails()));
     }
 
+
+    @Cacheable("listPokemon")
     public Flux<PokemonDetails> getListOfPokemon() {
         final long start = System.nanoTime();
 
         return pokemonApi.getAllPokemon()
                 .flatMap(s ->
                         getAllPokemonDetails(s.getResults()))
+                .cache()
                 .doOnNext(i -> log.info(String.valueOf(i)))
                 .doFinally(endType -> System.out.println(TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start) + " miliseconds"))
                 .onErrorResume(throwable -> Mono.just(new PokemonDetails()));
     }
 
 
+    @Cacheable("getPokemon")
     public Mono<PokemonDetails> getPokemon(String pokemonId) {
         return queryPokemonDetails(pokemonId)
+                .cache()
                 .onErrorResume(throwable -> Mono.just(new PokemonDetails()));
     }
 
@@ -61,6 +69,8 @@ public class PokemonService {
                 .flatMap(p -> queryPokemonDetails(p.getUrl())
                         .publishOn(Schedulers.boundedElastic()));
     }
+
+
 
     private Mono<PokemonDetails> queryPokemonDetails(String uriPokemon) {
         return this.http
