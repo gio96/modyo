@@ -15,7 +15,8 @@ on:
 
 env:
   #PROJECT_ID: ${{ secrets.PROJECT_ID_GCP }}
-  GCE_INSTANCE_ZONE: us-east1-d
+  #GCE_INSTANCE_ZONE: us-east1-d
+  GCE_INSTANCE_ZONE: us-east1-b
 
 jobs:
 
@@ -65,7 +66,6 @@ jobs:
           cache-from: type=registry,ref=gcr.io/${{ secrets.PROJECT_ID_GCP }}/modyo:latest
           cache-to: type=inline
           tags: gcr.io/${{ secrets.PROJECT_ID_GCP }}/modyo:latest
-          #tags: giovanny96/modyo:latest
 
       - name: Deploy GCE
         run: |-
