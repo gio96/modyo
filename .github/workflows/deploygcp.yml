@@ -76,6 +76,6 @@ jobs:
 
       - name: Deploy GCE
         run: |-
-            gcloud compute instances update-container "modyo" \
+            gcloud compute instances update-container modyo \
             --zone "$GCE_INSTANCE_ZONE" \
             --container-image gcr.io/${{ secrets.PROJECT_ID_GCP }}/modyo:latest
