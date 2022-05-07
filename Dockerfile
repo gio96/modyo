@@ -1,7 +1,20 @@
 FROM eclipse-temurin:17
-EXPOSE 8080
-COPY target/modyo.jar modyo.jar
+#ARG PROFILE
+#ENV PROFILE_VAR=$PROFILE
+VOLUME /tmp
+## Add the built jar for docker image building
+ADD target/modyo.jar modyo.jar
+#ENTRYPOINT ["/bin/bash", "-c", "java","-Dspring.profiles.active=$PROFILE_VAR","-jar","/modyo.jar"]
 ENTRYPOINT ["java","-jar","/modyo.jar"]
+## DO NOT USE(The variable would not be substituted): ENTRYPOINT ["java","-Dspring.profiles.active=$PROFILE_VAR","-jar","/hello-world-docker-action.jar"]
+## CAN ALSO USE: ENTRYPOINT java -Dspring.profiles.active=$PROFILE_VAR -jar /hello-world-docker-action.jar
+EXPOSE 80
+
+
+#FROM eclipse-temurin:17
+#EXPOSE 8080
+#COPY target/modyo.jar modyo.jar
+#ENTRYPOINT ["java","-jar","/modyo.jar"]
 
 
 #FROM eclipse-temurin:17
