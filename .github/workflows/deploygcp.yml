@@ -42,8 +42,10 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
       - name: Setup gcloud
-        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        #uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        uses: google-github-actions/setup-gcloud@master
         with:
+          version: "290.0.1"
           service_account_key: ${{ secrets.KEY_SECRET_GCP }}
           project_id: ${{ secrets.PROJECT_ID_GCP }}
           export_default_credentials: true
