@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 
 env:
-  PROJECT_ID: ${{ secrets.PROJECT_ID_GCP }}
+  #PROJECT_ID: ${{ secrets.PROJECT_ID_GCP }}
   GCE_INSTANCE_ZONE: us-east1-d
 
 jobs:
@@ -49,7 +49,7 @@ jobs:
         with:
           version: "290.0.1"
           service_account_key: ${{ secrets.KEY_SECRET_GCP }}
-          project_id: $PROJECT_ID
+          project_id: ${{ secrets.PROJECT_ID_GCP }}
           export_default_credentials: true
 
       - name: Configure docker for GCP
@@ -62,14 +62,13 @@ jobs:
           file: ./Dockerfile
           pull: true
           push: true
-          #cache-from: type=registry,ref=giovanny96/modyo:latest
-          cache-from: type=registry,ref=gcr.io/$PROJECT_ID/modyo:latest
+          cache-from: type=registry,ref=gcr.io/${{ secrets.PROJECT_ID_GCP }}/modyo:latest
           cache-to: type=inline
-          tags: gcr.io/$PROJECT_ID/modyo:latest
+          tags: gcr.io/${{ secrets.PROJECT_ID_GCP }}/modyo:latest
           #tags: giovanny96/modyo:latest
 
       - name: Deploy GCE
         run: |-
             gcloud compute instances update-container "modyo" \
             --zone "$GCE_INSTANCE_ZONE" \
-            --container-image "gcr.io/$PROJECT_ID/modyo:latest
+            --container-image gcr.io/${{ secrets.PROJECT_ID_GCP }}/modyo:latest
