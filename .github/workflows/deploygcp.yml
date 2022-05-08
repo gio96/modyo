@@ -43,24 +43,33 @@ jobs:
         #run: mvn clean package -Dmaven.test.skip=true
         run: mvn clean package
 
-      - name: Login github
-        uses: actions/labeler@v4
+      - name: Add coverage to PR
+        id: jacoco
+        uses: madrapps/jacoco-report@v1.2
         with:
-          repo-token: ${{ secrets.TOKEN_GITHUB_JACOCO }}
+          paths: ${{ github.workspace }}/target/site/jacoco/jacoco.xml
+          token: ${{ secrets.TOKEN_GITHUB_JACOCO }}
+          min-coverage-overall: 40
+          min-coverage-changed-files: 60
 
-      # generates coverage-report.md and publishes as checkrun
-      - name: JaCoCo Code Coverage Report
-        id: jacoco_reporter
-        uses: PavanMudigonda/jacoco-reporter@v4.3
-        with:
-          coverage_results_path: target/site/jacoco/jacoco.xml
-          coverage_report_name: Coverage
-          coverage_report_title: JaCoCo
-          github_token: ${{ secrets.TOKEN_GITHUB_JACOCO }}
-          skip_check_run: false
-          minimum_coverage: 80
-          fail_below_threshold: true
-          publish_only_summary: false
+#      - name: Login github
+#        uses: actions/labeler@v4 # validar que si sea para login con github
+#        with:
+#          repo-token: ${{ secrets.TOKEN_GITHUB_JACOCO }}
+#
+#      # generates coverage-report.md and publishes as checkrun
+#      - name: JaCoCo Code Coverage Report
+#        id: jacoco_reporter
+#        uses: PavanMudigonda/jacoco-reporter@v4.3
+#        with:
+#          coverage_results_path: target/site/jacoco/jacoco.xml
+#          coverage_report_name: Coverage
+#          coverage_report_title: JaCoCo
+#          github_token: ${{ secrets.TOKEN_GITHUB_JACOCO }}
+#          skip_check_run: false
+#          minimum_coverage: 80
+#          fail_below_threshold: true
+#          publish_only_summary: false
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
