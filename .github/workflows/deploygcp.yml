@@ -86,3 +86,4 @@ jobs:
              --project=${{ secrets.PROJECT_ID_GCP }} \
              --region=us-central1 \
               && gcloud run services update-traffic modyo --to-latest
+              && gcloud config set run/region us-central1
