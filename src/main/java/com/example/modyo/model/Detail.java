@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class PokemonTypeDetails {
+public class Detail {
 
     private String name;
     private String url;

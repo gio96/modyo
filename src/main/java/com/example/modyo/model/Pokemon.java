@@ -13,5 +13,5 @@ import java.util.List;
 @NoArgsConstructor
 public class Pokemon {
 
-   private List<ResultsDetails> results;
+   private List<Detail> results;
 }

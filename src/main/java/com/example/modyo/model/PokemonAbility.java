@@ -11,6 +11,6 @@ import lombok.ToString;
 @NoArgsConstructor
 public class PokemonAbility {
 
-    private PokemonAbilityDetails ability;
+    private Detail ability;
 
 }
