@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: Deploy gcp
 
 
 on:
@@ -83,6 +83,6 @@ jobs:
         run: |-
              gcloud run deploy modyo \
              --image=gcr.io/${{ secrets.PROJECT_ID_GCP }}/modyo \
-             --region=us-east1 \
              --project=${{ secrets.PROJECT_ID_GCP }} \
+             --region=us-central1 \
               && gcloud run services update-traffic modyo --to-latest
