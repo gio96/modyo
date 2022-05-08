@@ -74,8 +74,19 @@ jobs:
           cache-to: type=inline
           tags: gcr.io/${{ secrets.PROJECT_ID_GCP }}/modyo:latest
 
-      - name: Deploy GCE
+      #- name: Deploy GCE
+      #  run: |-
+      #      gcloud compute instances update-container modyo-vm \
+      #      --zone "$GCE_INSTANCE_ZONE" \
+      #      --container-image gcr.io/${{ secrets.PROJECT_ID_GCP }}/modyo:latest
+      - name: variables
+        run: |
+             echo ${{ secrets.PROJECT_ID_GCP }} \
+             echo "path /${{ secrets.PROJECT_ID_GCP }}"
+      - name: Deploy cloud run
         run: |-
-            gcloud compute instances update-container modyo \
-            --zone "$GCE_INSTANCE_ZONE" \
-            --container-image gcr.io/${{ secrets.PROJECT_ID_GCP }}/modyo:latest
+             gcloud run deploy modyo \
+             --image=gcr.io/${{ secrets.PROJECT_ID_GCP }}/modyo \
+             --region=us-central1 \
+             --project=${{ secrets.PROJECT_ID_GCP }} \
+              && gcloud run services update-traffic modyo --to-latest
