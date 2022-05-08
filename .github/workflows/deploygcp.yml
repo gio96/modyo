@@ -43,14 +43,25 @@ jobs:
         #run: mvn clean package -Dmaven.test.skip=true
         run: mvn clean package
 
-      - name: Add coverage to PR
-        id: jacoco
-        uses: madrapps/jacoco-report@v1.2
+        #Test coverage
+      - name: Add coverage codecov
+        uses: codecov/codecov-action@v2
         with:
-          paths: ${{ github.workspace }}/target/site/jacoco/jacoco.xml
-          token: ${{ secrets.TOKEN_GITHUB_JACOCO }}
-          min-coverage-overall: 40
-          min-coverage-changed-files: 60
+          #token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+          directory: ${{ github.workspace }}/target/site/jacoco
+          files: jacoco.xml # optional
+          flags: unittests # optional
+          name: codecov-umbrella # optional
+          fail_ci_if_error: true # optional (default = false)
+          verbose: true # optional (default = false)
+#      - name: Add coverage to PR
+#        id: jacoco
+#        uses: madrapps/jacoco-report@v1.2
+#        with:
+#          paths: ${{ github.workspace }}/target/site/jacoco/jacoco.xml
+#          token: ${{ secrets.TOKEN_GITHUB_JACOCO }}
+#          min-coverage-overall: 40
+#          min-coverage-changed-files: 60
 
 #      - name: Login github
 #        uses: actions/labeler@v4 # validar que si sea para login con github
