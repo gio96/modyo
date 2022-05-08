@@ -43,6 +43,7 @@ jobs:
         #run: mvn clean package -Dmaven.test.skip=true
         run: mvn clean package
 
+        #Test coverage
       - name: Add coverage to PR
         id: jacoco
         uses: madrapps/jacoco-report@v1.2
