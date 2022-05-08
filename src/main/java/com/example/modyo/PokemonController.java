@@ -13,18 +13,23 @@ import reactor.core.publisher.Mono;
 public record PokemonController(PokemonService pokemonService) {
 
 
-    @GetMapping("")
+    @GetMapping("bigList")
     public Flux<PokemonDetails> getBigListOfPokemon(@RequestParam(name = "limit") String limit) {
         return pokemonService.getBigListOfPokemon(limit);
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public Flux<PokemonDetails> getListOfPokemon() {
         return pokemonService.getListOfPokemon();
     }
 
-    @GetMapping("details")
+    @GetMapping("/specific")
     public Mono<PokemonDetails> getPokemonDetails(@RequestBody PokemonDetailsDto pokemonDetailsDto) {
         return pokemonService.getPokemon(pokemonDetailsDto.url());
+    }
+
+    @GetMapping("test")
+    public Mono<String> getTestLatest() {
+        return Mono.just("Funciono latest");
     }
 }

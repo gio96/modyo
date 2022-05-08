@@ -79,10 +79,6 @@ jobs:
       #      gcloud compute instances update-container modyo-vm \
       #      --zone "$GCE_INSTANCE_ZONE" \
       #      --container-image gcr.io/${{ secrets.PROJECT_ID_GCP }}/modyo:latest
-      - name: variables
-        run: |
-             echo ${{ secrets.PROJECT_ID_GCP }} \
-             echo "path /${{ secrets.PROJECT_ID_GCP }}"
       - name: Deploy cloud run
         run: |-
              gcloud run deploy modyo \
