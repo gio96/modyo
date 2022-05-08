@@ -28,8 +28,4 @@ public record PokemonController(PokemonService pokemonService) {
         return pokemonService.getPokemon(pokemonDetailsDto.url());
     }
 
-    @GetMapping("test")
-    public Mono<String> getTestLatest() {
-        return Mono.just("Funciono latest");
-    }
 }

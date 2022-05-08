@@ -83,6 +83,5 @@ jobs:
         run: |-
              gcloud run deploy modyo \
              --image=gcr.io/${{ secrets.PROJECT_ID_GCP }}/modyo \
-             --region=us-central1 \
              --project=${{ secrets.PROJECT_ID_GCP }} \
               && gcloud run services update-traffic modyo --to-latest
