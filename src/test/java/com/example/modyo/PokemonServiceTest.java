@@ -5,21 +5,20 @@ import com.example.modyo.gateway.PokemonGateway;
 import com.example.modyo.model.Detail;
 import com.example.modyo.model.Pokemon;
 import com.example.modyo.model.PokemonDetails;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.io.IOException;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class PokemonServiceTest {
 
     @Mock
@@ -91,6 +90,5 @@ public class PokemonServiceTest {
                 .verify();
 
     }
-
 
 }
