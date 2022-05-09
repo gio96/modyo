@@ -84,16 +84,12 @@ public class PokemonServiceTest {
     @Test
     public void testGetPokemonError() {
 
-        var pokemonDetail = new PokemonDetails();
-
-        //when(pokemonGateway.queryPokemonDetails(anyString())).thenThrow(new NullPointerException("Error occurred"));
         when(pokemonGateway.queryPokemonDetails(anyString())).thenReturn(Mono.empty());
 
         StepVerifier.create(pokemonService.getPokemon(anyString()))
                 .expectErrorMessage(PokemonException.Type.POKEMON_NOT_FOUND.getMessage())
                 .verify();
 
-        //verify(pokemonGateway, times(1)).queryPokemonDetails(anyString());
     }
 
 
