@@ -1,8 +1,10 @@
 package com.example.modyo;
 
 import com.example.modyo.dto.PokemonDetailsDto;
+import com.example.modyo.exception.PokemonException;
 import com.example.modyo.model.PokemonDetails;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -25,7 +27,12 @@ public record PokemonController(PokemonService pokemonService) {
 
     @GetMapping("/specific")
     public Mono<PokemonDetails> getPokemonDetails(@RequestBody PokemonDetailsDto pokemonDetailsDto) {
-        return pokemonService.getPokemon(pokemonDetailsDto.url());
+        return Mono.just(pokemonDetailsDto)
+                .switchIfEmpty(Mono.error(PokemonException.Type.POKEMON_NOT_ANSWER.build()))
+                .filter(dto -> Strings.isNotBlank(dto.url()))
+                .switchIfEmpty(Mono.error(PokemonException.Type.POKEMON_NOT_ANSWER.build()))
+                .flatMap(detailsDto -> pokemonService.getPokemon(detailsDto.url()));
+
     }
 
 }

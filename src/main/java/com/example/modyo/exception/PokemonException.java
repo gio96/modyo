@@ -2,7 +2,8 @@ package com.example.modyo.exception;
 
 public class PokemonException extends RuntimeException {
     public enum Type {
-        POKEMON_NOT_FOUND("La lista de pokemon no existe", 404);
+        POKEMON_NOT_FOUND("La lista de pokemon no existe", 404),
+        POKEMON_NOT_ANSWER("El objeto esta mal construido", 400);
 
         private final String message;
         private final Integer status;
