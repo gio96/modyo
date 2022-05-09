@@ -1,5 +1,6 @@
 package com.example.modyo;
 
+import com.example.modyo.exception.PokemonException;
 import com.example.modyo.gateway.PokemonGateway;
 import com.example.modyo.model.Detail;
 import com.example.modyo.model.Pokemon;
@@ -39,7 +40,7 @@ public class PokemonService {
     public Mono<PokemonDetails> getPokemon(String pokemonId) {
         return pokemonGateway.queryPokemonDetails(pokemonId)
                 .cache()
-                .onErrorResume(throwable -> Mono.just(new PokemonDetails()));
+                .switchIfEmpty(Mono.error(PokemonException.Type.POKEMON_NOT_FOUND.build()));
     }
 
     private Flux<PokemonDetails> getFluxPokemonDetails(Flux<Pokemon> pokemon) {
